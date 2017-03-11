@@ -1,62 +1,87 @@
-import javax.management.DynamicMBean;
-import java.util.ArrayList;
+import java.util.Arrays;
 
-/**
- * Created by Maxim on 10.03.2017.
- */
 public class DynamicStringList implements SimpleList {
 
-    private int sizeArray = 10;
-    private ArrayList<String> array = new ArrayList<>(sizeArray);
-
-    public DynamicStringList(int sizeArray) {
-        this.sizeArray = sizeArray;
+    private static final int DEFAULT_CAPACITY = 10;
+    private String[] array;
+    private int index;
+    
+    public DynamicStringList() {
+        this(DEFAULT_CAPACITY);
     }
 
-    public DynamicStringList() { }
+    public DynamicStringList(int capacity) {
+        array = new String[capacity];
+    }
 
     @Override
     public void add(String s) {
-       array.add(s);
-        System.out.println("Добавлена строка");
+        if (index == array.length) {
+            extensionArray();
+        }
+        array[index++] = s;
     }
 
     @Override
     public String get() {
-        return array.get(array.size()-1);
+
+        if (index == 0) {
+            throw new IllegalArgumentException("List is empty");
+        }
+        return array[index - 1];
     }
 
     @Override
     public String get(int id) {
-        return array.get(id);
+        checkIndex(id);
+        return array[id];
     }
+
     @Override
     public String remove() {
-        return array.remove(array.size()-1);
+        if (index == 0) {
+            throw new RuntimeException("List is empty");
+        }
+        String result = array[index - 1];
+        index--;
+        return result;
     }
 
     @Override
     public String remove(int id) {
-        return array.remove(id);
+        String result = get(id);
+        System.arraycopy(array, id + 1, array, id, index - id - 1);
+        array[id + 1] = null;
+        index--;
+        return result;
     }
 
     @Override
     public boolean delete() {
-        array.clear();
-        if(array.size()==0){
-            return true;
-        }
-        else{
+        if (index == 0) {
             return false;
         }
+        index = 0;
+        array = new String[DEFAULT_CAPACITY];
+        return true;
     }
 
     @Override
     public String toString() {
-        System.out.println();
         return "DynamicStringList{" +
-                "sizeArray=" + sizeArray +
-                ", array='" + array + '\'' +
+                "array=" + Arrays.toString(array) +
+                ", index=" + index +
                 '}';
+    }
+    private void extensionArray() {
+        String[] newArray = new String[array.length * 2];
+        System.arraycopy(array, 0, newArray, 0, index - 1);
+        array = newArray;
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= this.index) {
+            throw new IllegalArgumentException();
+        }
     }
 }
