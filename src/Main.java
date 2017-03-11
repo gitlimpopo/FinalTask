@@ -4,15 +4,18 @@
 public class Main {
     public static void main(String args []){
         String s = "Massiv";
+        String b = "Strok";
+        String c = "Java";
         DynamicStringList dynamicStringList = new DynamicStringList();
         dynamicStringList.add(s);
+        dynamicStringList.add(b);
+        dynamicStringList.add(c);
+        dynamicStringList.toString();
         System.out.println("Последний элемент из массива: " + dynamicStringList.get());
-        System.out.println("Элемент по его индексу: " + dynamicStringList.get(3));
-        System.out.println("Удаленный последний элемент: "+dynamicStringList.remove());
-        System.out.println(" Удаленный элемент по индексу: " + dynamicStringList.remove(3));
-        System.out.println("Удаление всех елементов: " + dynamicStringList.delete());
-        DynamicStringList dynamicStringList1 = new DynamicStringList(5);
-        dynamicStringList1.add(s);
+        System.out.println("Получить элемент по его индексу: " + dynamicStringList.get(0));
+        System.out.println("Удаление последнего элемента: " + dynamicStringList.remove());
+        System.out.println("Удаление элемента по индексу: " + dynamicStringList.remove(0));
+        System.out.println("Удаление всех элементов массива: " + dynamicStringList.delete());
 
     }
 }

@@ -1,4 +1,5 @@
 import javax.management.DynamicMBean;
+import java.util.ArrayList;
 
 /**
  * Created by Maxim on 10.03.2017.
@@ -6,47 +7,43 @@ import javax.management.DynamicMBean;
 public class DynamicStringList implements SimpleList {
 
     private int sizeArray = 10;
-    private String array = new String();
+    private ArrayList<String> array = new ArrayList<>(sizeArray);
 
     public DynamicStringList(int sizeArray) {
         this.sizeArray = sizeArray;
     }
 
-    public DynamicStringList() {
-    }
+    public DynamicStringList() { }
 
     @Override
     public void add(String s) {
-        array = s;
-        System.out.println("Добавление строки: " + array);
+       array.add(s);
+        System.out.println("Добавлена строка");
     }
 
     @Override
     public String get() {
-        return String.valueOf(array.charAt(array.length()-1));
+        return array.get(array.size()-1);
     }
 
     @Override
     public String get(int id) {
-        return String.valueOf(array.charAt(id));
+        return array.get(id);
     }
-
     @Override
     public String remove() {
-        array = array.substring(0,array.length()-1);
-        return array;
+        return array.remove(array.size()-1);
     }
 
     @Override
     public String remove(int id) {
-        array = array.substring(0,id)+ array.substring(id+1);
-        return array;
+        return array.remove(id);
     }
 
     @Override
     public boolean delete() {
-        array = array.substring(0,0);
-        if(array.length()==0){
+        array.clear();
+        if(array.size()==0){
             return true;
         }
         else{
@@ -56,6 +53,7 @@ public class DynamicStringList implements SimpleList {
 
     @Override
     public String toString() {
+        System.out.println();
         return "DynamicStringList{" +
                 "sizeArray=" + sizeArray +
                 ", array='" + array + '\'' +
