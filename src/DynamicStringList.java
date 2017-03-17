@@ -5,7 +5,7 @@ public class DynamicStringList implements SimpleList {
     private static final int DEFAULT_CAPACITY = 10;
     private String[] array;
     private int index;
-    
+
     public DynamicStringList() {
         this(DEFAULT_CAPACITY);
     }
@@ -49,9 +49,13 @@ public class DynamicStringList implements SimpleList {
 
     @Override
     public String remove(int id) {
+        checkIndex(id);
         String result = get(id);
-        System.arraycopy(array, id + 1, array, id, index - id - 1);
-        array[id + 1] = null;
+        String [] copy = new String[array.length-1];
+        System.arraycopy(array, id+1, copy, id, array.length-id-1);
+        //System.arraycopy(array, id + 1, array, id, index - id - 1);
+        //array[id + 1] = null;
+        array = copy;
         index--;
         return result;
     }
